@@ -1,17 +1,34 @@
-'use strict';
+const { port, host } = require('../configuration');
+const { connectDB } = require('../utils/db.js');
+const { User } = require('./models/users.js');
 
 const express = require('express');
+const app = express();
+app.use(express.json());
 
-// Constants
-const PORT = 8080;
-const HOST = '0.0.0.0';
+connectDB()
+  .on('error', console.log)
+  .on('disconnected', connectDB)
+  .once('open', startServer);
+
+function startServer() {
+  app.listen(port, host, () => {
+    console.log(`Running on http://${host}:${port}`);
+  });
+}
 
 // App
-const app = express();
 app.get('/', (req, res) => {
   res.send('Hello World');
 });
 
-app.listen(PORT, HOST, () => {
-  console.log(`Running on http://${HOST}:${PORT}`);
-});
+app.get('/users', async (req, res) => {
+  const users = await User.find();
+  res.json({users});
+})
+
+app.post('/users', async (req, res) => {
+  const user = new User(req.body);
+  await user.save();
+  res.json(user);
+})
