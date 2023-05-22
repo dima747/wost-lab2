@@ -19,7 +19,7 @@ function startServer() {
 
 // App
 app.get('/', (req, res) => {
-  res.send('Hello World');
+  res.send('Hello World _Updated');
 });
 
 app.get('/users', async (req, res) => {
