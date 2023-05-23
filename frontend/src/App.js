@@ -1,5 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
+import axios from 'axios';
+
+
 
 function App() {
   return (
@@ -17,9 +20,17 @@ function App() {
         >
           Learn React
         </a>
+        <button onClick={makeApiRequest}>Make a request</button>
       </header>
     </div>
   );
 }
+
+const makeApiRequest = () => {
+  axios.get("/api/users").then(res => {
+    console.log(res)
+  }
+)}
+
 
 export default App;
