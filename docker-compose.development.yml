@@ -13,6 +13,19 @@ services:
       - MONGO_URL=mongodb://api_db:27017/api
     depends_on:
       - api_db
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: ./Dockerfile.dev
+    container_name: realworld-docker-frontent
+    command: npm run start
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    depends_on:
+      - api
   api_db:
     image: mongo:latest
     volumes:
